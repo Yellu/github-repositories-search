@@ -3,6 +3,7 @@ package com.mapprr.gitsearch.database;
 import java.io.IOException;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import okhttp3.ResponseBody;
 
 /**
@@ -27,6 +28,13 @@ public class DBManager {
         try {
             String jsonStr = responseBody.string();
             realm.beginTransaction();
+
+            RealmResults<RepositoryEntity> repositoryEntities = Realm.getDefaultInstance().where(RepositoryEntity.class).findAll();
+
+            if (!repositoryEntities.isEmpty()){
+                repositoryEntities.deleteAllFromRealm();
+            }
+
             realm.createOrUpdateObjectFromJson(RepoResultsEntity.class, jsonStr);
             realm.commitTransaction();
         } catch (IOException e) {

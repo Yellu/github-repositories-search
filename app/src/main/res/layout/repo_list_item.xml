@@ -18,7 +18,7 @@
             android:scaleType="centerCrop"/>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="10dp"
             android:gravity="center_vertical"
@@ -29,7 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                fontPath="fonts/Roboto-Medium.ttf"
+                android:textColor="@color/text_color_primary"
+                fontPath="fonts/Roboto-Regular.ttf"
                 android:text="@string/app_name" />
 
             <TextView
@@ -37,7 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                fontPath="fonts/Roboto-Medium.ttf"
+                android:textColor="@color/text_color_primary"
+                fontPath="fonts/Roboto-Regular.ttf"
                 android:text="@string/app_name" />
 
             <LinearLayout
@@ -51,8 +53,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/text_color_secondary"
                     android:drawablePadding="10dp"
-                    fontPath="fonts/Roboto-Regular.ttf"
                     android:drawableStart="@drawable/ic_watcher_count"
                     android:gravity="center_vertical"
                     android:text="@string/app_name" />
@@ -63,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawablePadding="10dp"
-                    fontPath="fonts/Roboto-Regular.ttf"
+                    android:textColor="@color/text_color_secondary"
                     android:drawableStart="@drawable/ic_code_fork"
                     android:gravity="center_vertical"
                     android:text="@string/app_name" />

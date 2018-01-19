@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:appcompat="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menuSearch"
+        android:icon="@android:drawable/ic_menu_search"
+        appcompat:actionViewClass="android.support.v7.widget.SearchView"
+        android:visible="false"
+        android:orderInCategory="100"
+        appcompat:showAsAction="always" />
+    <item
+        android:id="@+id/menuSync"
+        android:title="Sync"
+        android:visible="false"
+        appcompat:showAsAction="never">
+    </item>
+</menu>
