@@ -43,6 +43,15 @@ public class LauncherActivity extends AppCompatActivity {
                 .commit();
     }
 
+    @Subscribe
+    public void launchContributorDetails(RepoDetailsEvent repoDetailsEvent){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.repo, new ContributorDetailsFragment())
+                .addToBackStack(null)
+                .commit();
+    }
+
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));

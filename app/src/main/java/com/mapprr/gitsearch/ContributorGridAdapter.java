@@ -10,24 +10,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import java.util.ArrayList;
-import java.util.List;
+import com.mapprr.gitsearch.database.ContributorEntity;
+import com.mapprr.gitsearch.event.ContributorDetailsEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.RealmResults;
 
 /**
  * Created by appigizer on 20/1/18.
  */
 
 public class ContributorGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private LayoutInflater inflater;
     private Context context;
-    private List<String> stringList = new ArrayList<>();
+    private RealmResults<ContributorEntity> contributorEntities;
     public ContributorGridAdapter(Activity activity){
         this.context = activity;
-//        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        stringList.add("1");
-        stringList.add("2");stringList.add("3");stringList.add("4");stringList.add("5");stringList.add("6");stringList.add("7");stringList.add("8");stringList.add("9");
+    }
+
+    public void updateAdapter(RealmResults<ContributorEntity> contributorEntities){
+        this.contributorEntities = contributorEntities;
     }
 
     @Override
@@ -38,22 +42,37 @@ public class ContributorGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ContributorViewHolder viewHolder = (ContributorViewHolder) holder;
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        final ContributorViewHolder viewHolder = (ContributorViewHolder) holder;
+        final ContributorEntity contributorEntity = contributorEntities.get(position);
+        String url = contributorEntity.avatar_url;
+        String name = contributorEntity.login;
         Glide.with(context)
                 .asBitmap()
-                .load("")
+                .load(url)
                 .apply(RequestOptions.circleCropTransform()
                         .placeholder(R.drawable.user_placeholder)
                         .error(R.drawable.user_placeholder))
                 .into(viewHolder.contributorAvatar);
 
-        viewHolder.contributorName.setText(R.string.app_name);
+        viewHolder.contributorName.setText(name);
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingsManager.getInstance().contributorEntity = contributorEntities.get(viewHolder.getAdapterPosition());
+                EventBus.getDefault().post(new ContributorDetailsEvent());
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        if (contributorEntities == null){
+            return 0;
+        }
+        return contributorEntities.size();
     }
 
     public static class ContributorViewHolder extends RecyclerView.ViewHolder{
