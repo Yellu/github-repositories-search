@@ -27,6 +27,7 @@ public class ContributorEntity extends RealmObject {
     public String type;
     public Boolean site_admin;
     public Integer contributions;
+    public int parentRepoId;
 //    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 //
 //    @JsonAnyGetter

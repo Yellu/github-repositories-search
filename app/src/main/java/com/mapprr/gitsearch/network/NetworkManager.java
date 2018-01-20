@@ -5,6 +5,8 @@ import android.content.Context;
 import com.ihsanbal.logging.LoggingInterceptor;
 import com.mapprr.gitsearch.BuildConfig;
 
+import java.util.Map;
+
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.internal.platform.Platform;
@@ -13,6 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 /**
@@ -36,7 +39,7 @@ public class NetworkManager {
 
     private interface GitSearchApiClient{
         @GET("search/repositories")
-        Call<ResponseBody> getRepos(@Query("q") String searchKey);
+        Call<ResponseBody> getRepos(@QueryMap Map<String, Object> queryMap);
 
         @GET
         Call<ResponseBody> getContributors(@Url String url);
@@ -82,8 +85,8 @@ public class NetworkManager {
         return createService(GitSearchApiClient.class, context);
     }
 
-    public Call<ResponseBody> searchRequest(Context context, String query){
-        return getService(context).getRepos(query);
+    public Call<ResponseBody> searchRequest(Context context, Map<String, Object> queryMap){
+        return getService(context).getRepos(queryMap);
     }
 
     public Call<ResponseBody> contributorsRequest(Context context, String baseUrl){

@@ -2,9 +2,7 @@ package com.mapprr.gitsearch.database;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.io.IOException;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 import okhttp3.ResponseBody;
@@ -45,12 +43,32 @@ public class DBManager {
         }
     }
 
-    public void createContributorsFromJsonResponse(ResponseBody responseBody){
+    public void createContributorsFromJsonResponse(ResponseBody responseBody, int repoId){
         try {
             String jsonString = responseBody.string();
             JSONArray jsonArray = new JSONArray(jsonString);
             realm.beginTransaction();
             realm.createOrUpdateAllFromJson(ContributorEntity.class, jsonArray);
+
+            for (ContributorEntity contributorEntity: realm.where(ContributorEntity.class).findAll()){
+                contributorEntity.parentRepoId = repoId;
+            }
+
+            realm.commitTransaction();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createReposFromJsonResponse(ResponseBody responseBody){
+        try {
+            String jsonString = responseBody.string();
+            JSONArray jsonArray = new JSONArray(jsonString);
+            realm.beginTransaction();
+            realm.createOrUpdateAllFromJson(RepositoryEntity.class, jsonArray);
             realm.commitTransaction();
         } catch (IOException e) {
             e.printStackTrace();

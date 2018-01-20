@@ -1,4 +1,4 @@
-package com.mapprr.gitsearch;
+package com.mapprr.gitsearch.repoDetails;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.mapprr.gitsearch.R;
+import com.mapprr.gitsearch.SettingsManager;
 import com.mapprr.gitsearch.database.ContributorEntity;
 import com.mapprr.gitsearch.event.ContributorDetailsEvent;
-
 import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.RealmResults;
@@ -64,7 +64,6 @@ public class ContributorGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 EventBus.getDefault().post(new ContributorDetailsEvent());
             }
         });
-
     }
 
     @Override
