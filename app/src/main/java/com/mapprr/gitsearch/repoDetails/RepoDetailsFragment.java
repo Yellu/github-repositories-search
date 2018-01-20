@@ -12,13 +12,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.mapprr.gitsearch.R;
@@ -29,9 +27,7 @@ import com.mapprr.gitsearch.database.OwnerEntity;
 import com.mapprr.gitsearch.database.RepositoryEntity;
 import com.mapprr.gitsearch.event.ProjectLinkEvent;
 import com.mapprr.gitsearch.network.NetworkManager;
-
 import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

@@ -117,8 +117,8 @@ public class HomeFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_search, menu);
         final SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        this.searchMenuItem = menu.findItem(R.id.menuSearch);
-        searchView = (SearchView) menu.findItem(R.id.menuSearch).getActionView();
+        this.searchMenuItem = menu.findItem(R.id.menu_search);
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
 
         if (searchView != null) {
             editSearch = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
@@ -127,6 +127,9 @@ public class HomeFragment extends Fragment {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     hideSoftKeyboard(getActivity());
+                    if (query.isEmpty() || query.length() < 2){
+                        return true;
+                    }
                     fetchRepos(query);
                     return true;
                 }
@@ -157,7 +160,7 @@ public class HomeFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menuSearch:
+            case R.id.menu_search:
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -167,7 +170,8 @@ public class HomeFragment extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         editSearch.setTextColor(Color.WHITE);
-        menu.findItem(R.id.menuSearch).setVisible(true);
+        menu.findItem(R.id.menu_search).setVisible(true);
+        menu.findItem(R.id.menu_filter).setVisible(true);
     }
 
     public static void hideSoftKeyboard(Activity activity) {

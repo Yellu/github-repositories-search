@@ -29,13 +29,11 @@ public class DBManager {
         try {
             String jsonStr = responseBody.string();
             realm.beginTransaction();
+            RepoResultsEntity repoResultsEntity = realm.where(RepoResultsEntity.class).findFirst();
 
-            RealmResults<RepositoryEntity> repositoryEntities = Realm.getDefaultInstance().where(RepositoryEntity.class).findAll();
-
-            if (!repositoryEntities.isEmpty()){
-                repositoryEntities.deleteAllFromRealm();
+            if (repoResultsEntity != null){
+                repoResultsEntity.deleteFromRealm();
             }
-
             realm.createOrUpdateObjectFromJson(RepoResultsEntity.class, jsonStr);
             realm.commitTransaction();
         } catch (IOException e) {
@@ -53,7 +51,6 @@ public class DBManager {
             for (ContributorEntity contributorEntity: realm.where(ContributorEntity.class).findAll()){
                 contributorEntity.parentRepoId = repoId;
             }
-
             realm.commitTransaction();
 
         } catch (IOException e) {

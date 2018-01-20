@@ -66,7 +66,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             .error(R.drawable.user_placeholder))
                     .into(repoViewHolder.imageView);
         } else {
-            repoViewHolder.imageView.setImageResource(R.drawable.ic_github);
+            repoViewHolder.imageView.setImageResource(R.drawable.repo_github);
         }
 
         repoViewHolder.tvName.setText(name);

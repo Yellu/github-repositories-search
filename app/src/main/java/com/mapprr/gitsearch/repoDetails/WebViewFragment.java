@@ -92,9 +92,7 @@ public class WebViewFragment extends Fragment {
                 loadingProgressBar.hide();
             }
         });
-
     }
-
 
     @Override
     public void onPause() {

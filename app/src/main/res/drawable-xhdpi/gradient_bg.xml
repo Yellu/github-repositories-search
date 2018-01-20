@@ -5,13 +5,12 @@
         <shape
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
-            <corners
-                android:radius="0dp"/>
+            <corners android:radius="0dp"/>
             <gradient
-                android:angle="0"
-                android:startColor="#1a1031"
+                android:angle="270"
+                android:startColor="#FF6F00"
                 android:centerColor="#000000"
-                android:endColor="#AD1457"
+                android:endColor="#795548"
                 android:type="linear"/>
         </shape>
     </item>
@@ -19,8 +18,7 @@
         android:top="0dp">
         <shape
             android:shape="rectangle">
-            <solid
-                android:color="#40000000"/>
+            <solid android:color="#40000000"/>
         </shape>
     </item>
 </layer-list>

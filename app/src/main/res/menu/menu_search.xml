@@ -2,16 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:appcompat="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menuSearch"
+        android:id="@+id/menu_search"
         android:icon="@android:drawable/ic_menu_search"
         appcompat:actionViewClass="android.support.v7.widget.SearchView"
         android:visible="false"
         android:orderInCategory="100"
         appcompat:showAsAction="always" />
     <item
-        android:id="@+id/menuSync"
-        android:title="Sync"
+        android:id="@+id/menu_filter"
+        android:title="@string/filter"
+        android:icon="@drawable/ic_filter"
         android:visible="false"
-        appcompat:showAsAction="never">
+        android:orderInCategory="100"
+        appcompat:showAsAction="always">
     </item>
 </menu>
