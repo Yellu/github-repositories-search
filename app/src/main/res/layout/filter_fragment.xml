@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#E0E0E0"
+    android:orientation="vertical"
+    android:minWidth="1000dp"
+    android:minHeight="1000dp"
+    tools:ignore="MissingPrefix"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:background="@android:color/white"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    fontPath="fonts/Roboto-Bold.ttf"
+                    android:textColor="@color/text_color_primary"
+                    android:text="@string/filter"
+                    android:textSize="18sp"/>
+
+                <ImageView
+                    android:id="@+id/img_close_filter"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:padding="12dp"
+                    android:src="@drawable/multiply"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    fontPath="fonts/Roboto-Bold.ttf"
+                    android:textColor="@color/text_color_primary"
+                    android:padding="4dp"
+                    android:text="Sort By"/>
+
+                <info.hoang8f.android.segmented.SegmentedGroup
+                    android:id="@+id/choice_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:background="@android:color/white"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/star"
+                        style="@style/RadioButton"
+                        android:layout_width="0dp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Stars" />
+                    <RadioButton
+                        android:id="@+id/fork"
+                        style="@style/RadioButton"
+                        android:layout_width="0dp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Forks" />
+                    <RadioButton
+                        android:id="@+id/updated"
+                        style="@style/RadioButton"
+                        android:layout_width="0dp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Updated" />
+                </info.hoang8f.android.segmented.SegmentedGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:padding="4dp"
+                    fontPath="fonts/Roboto-Bold.ttf"
+                    android:textColor="@color/text_color_primary"
+                    android:layout_marginTop="14dp"
+                    android:text="Created Date Range"/>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:cardUseCompatPadding="true">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:id="@+id/llFromDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                fontPath="fonts/Roboto-Regular.ttf"
+                                android:textSize="16sp"
+                                android:textColor="@color/text_color_primary"
+                                android:text="From Date"/>
+
+                            <TextView
+                                android:id="@+id/tvStartDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:text="DD/MM/YYYY"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/light_gray"
+                            android:layout_marginEnd="5dp"/>
+
+                        <LinearLayout
+                            android:id="@+id/llToDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                fontPath="fonts/Roboto-Regular.ttf"
+                                android:textSize="16sp"
+                                android:textColor="@color/text_color_primary"
+                                android:text="To Date"/>
+
+                            <TextView
+                                android:id="@+id/tvEndDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:text="DD/MM/YYYY"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    fontPath="fonts/Roboto-Bold.ttf"
+                    android:textColor="@color/text_color_primary"
+                    android:layout_marginTop="14dp"
+                    android:text="Order By"/>
+
+                <info.hoang8f.android.segmented.SegmentedGroup
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/desc"
+                        style="@style/RadioButton"
+                        android:layout_width="0dp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Desc" />
+                    <RadioButton
+                        android:id="@+id/asc"
+                        style="@style/RadioButton"
+                        android:layout_width="0dp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Asc" />
+                </info.hoang8f.android.segmented.SegmentedGroup>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_save_filter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_code_fork"
+                android:text="@string/save"
+                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

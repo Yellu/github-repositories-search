@@ -24,6 +24,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 repositories {
@@ -57,4 +61,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.2'
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+    implementation 'info.hoang8f:android-segmented:1.0.6'
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
 }

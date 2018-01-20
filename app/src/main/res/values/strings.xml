@@ -7,4 +7,5 @@
     <string name="repository_list">Repository List</string>
     <string name="project_details">Project Details</string>
     <string name="filter">Filter</string>
+    <string name="save">Save</string>
 </resources>
