@@ -1,4 +1,4 @@
-package com.mapprr.gitsearch;
+package com.mapprr.gitsearch.home;
 
 import android.app.Activity;
 import android.app.SearchManager;
@@ -24,13 +24,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
+import com.mapprr.gitsearch.R;
 import com.mapprr.gitsearch.database.DBManager;
+import com.mapprr.gitsearch.database.RepoResultsEntity;
 import com.mapprr.gitsearch.database.RepositoryEntity;
 import com.mapprr.gitsearch.network.NetworkManager;
+import java.util.HashMap;
+import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,12 +53,16 @@ public class HomeFragment extends Fragment {
     Toolbar mToolbar;
     @BindView(R.id.dataLoadProgress)
     ContentLoadingProgressBar dataLoadProgress;
+    @BindView(R.id.tv_error_message)
+    TextView tv_error_message;
 
     private SearchView searchView;
     private EditText editSearch;
     private MenuItem searchMenuItem;
     private RepoListAdapter repoListAdapter;
     private RealmResults<RepositoryEntity> repositoryEntities;
+    private Realm realm;
+    private RepoResultsEntity repoResultsEntity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +75,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.repo_list_fragment, container, false);
         ButterKnife.bind(this, view);
+        realm = Realm.getDefaultInstance();
         return view;
     }
 
@@ -80,8 +91,16 @@ public class HomeFragment extends Fragment {
             mToolbar.setTitleTextColor(ContextCompat.getColor(getActivity(), android.R.color.white));
         }
 
-        repositoryEntities = Realm.getDefaultInstance().where(RepositoryEntity.class).findAll();
-        repoListAdapter = new RepoListAdapter(repositoryEntities, getActivity());
+        repoResultsEntity = realm.where(RepoResultsEntity.class).findFirst();
+        if (repoResultsEntity != null){
+            repositoryEntities = repoResultsEntity.items.where().findAll().sort("watchers_count", Sort.DESCENDING);
+        }
+
+        if (repositoryEntities == null || repositoryEntities.isEmpty()){
+            tv_error_message.setVisibility(View.VISIBLE);
+        }
+
+        repoListAdapter = new RepoListAdapter(repositoryEntities, getActivity(), true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
@@ -121,7 +140,16 @@ public class HomeFragment extends Fragment {
     }
 
     private void reloadAdapter(){
-        repositoryEntities = Realm.getDefaultInstance().where(RepositoryEntity.class).findAll();
+        repoResultsEntity = realm.where(RepoResultsEntity.class).findFirst();
+        if (repoResultsEntity != null){
+            repositoryEntities = repoResultsEntity.items.where().findAll().sort("watchers_count", Sort.DESCENDING);
+        }
+
+        if (repositoryEntities == null || repositoryEntities.isEmpty()){
+            tv_error_message.setVisibility(View.VISIBLE);
+        } else {
+            tv_error_message.setVisibility(View.GONE);
+        }
         repoListAdapter.updateAdapter(repositoryEntities);
         repoListAdapter.notifyDataSetChanged();
     }
@@ -148,9 +176,16 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchRepos(String query){
+        tv_error_message.setVisibility(View.GONE);
         dataLoadProgress.show();
-        Call<ResponseBody> request = NetworkManager.getInstance().searchRequest(getActivity(), query);
 
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("q", query);
+        queryMap.put("sort", "watcher_count");
+        queryMap.put("order", "desc");
+        queryMap.put("per_page", 10);
+
+        Call<ResponseBody> request = NetworkManager.getInstance().searchRequest(getActivity(), queryMap);
         request.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
