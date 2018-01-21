@@ -1,4 +1,4 @@
-package com.mapprr.gitsearch.home;
+package com.mapprr.gitsearch.main;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -329,16 +329,6 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
         calendar.setTime(new Date());
         calendar.set(Calendar.HOUR, 11);
         calendar.set(Calendar.MINUTE, 59);
-
-//        String minDateStr = "2017-10-16T12:27:18.284Z";
-//        Date minDate = Utilities.stringToDate(minDateStr);
-//        minDate.after(new Date());
-
-//        Calendar minDateCalendar = Calendar.getInstance();
-//        minDateCalendar.setTime(minDate);
-//        minDateCalendar.set(Calendar.HOUR, 11);
-//        minDateCalendar.set(Calendar.MINUTE, 59);
-
         DatePicker datePickerView = datePickerDialog.getDatePicker();
         datePickerView.setMaxDate(calendar.getTimeInMillis());
         datePickerDialog.show();

@@ -1,4 +1,4 @@
-package com.mapprr.gitsearch.contributor;
+package com.mapprr.gitsearch.main;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,7 +22,7 @@ import com.mapprr.gitsearch.SettingsManager;
 import com.mapprr.gitsearch.database.ContributorEntity;
 import com.mapprr.gitsearch.database.DBManager;
 import com.mapprr.gitsearch.database.RepositoryEntity;
-import com.mapprr.gitsearch.home.RepoListAdapter;
+import com.mapprr.gitsearch.main.RepoListAdapter;
 import com.mapprr.gitsearch.network.NetworkManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;

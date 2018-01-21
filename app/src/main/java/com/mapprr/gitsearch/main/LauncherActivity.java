@@ -1,17 +1,19 @@
-package com.mapprr.gitsearch;
+package com.mapprr.gitsearch.main;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import com.mapprr.gitsearch.contributor.ContributorDetailsFragment;
+
+import com.mapprr.gitsearch.R;
+import com.mapprr.gitsearch.main.ContributorDetailsFragment;
 import com.mapprr.gitsearch.event.ContributorDetailsEvent;
 import com.mapprr.gitsearch.event.ProjectLinkEvent;
 import com.mapprr.gitsearch.event.RepoDetailsEvent;
-import com.mapprr.gitsearch.home.HomeFragment;
-import com.mapprr.gitsearch.repoDetails.RepoDetailsFragment;
-import com.mapprr.gitsearch.repoDetails.WebViewFragment;
+import com.mapprr.gitsearch.main.HomeFragment;
+import com.mapprr.gitsearch.main.RepoDetailsFragment;
+import com.mapprr.gitsearch.main.WebViewFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;

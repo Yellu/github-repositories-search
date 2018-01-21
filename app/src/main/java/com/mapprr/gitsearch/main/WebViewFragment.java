@@ -1,4 +1,4 @@
-package com.mapprr.gitsearch.repoDetails;
+package com.mapprr.gitsearch.main;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.mapprr.gitsearch.R;
+import com.mapprr.gitsearch.main.WebAppInterface;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

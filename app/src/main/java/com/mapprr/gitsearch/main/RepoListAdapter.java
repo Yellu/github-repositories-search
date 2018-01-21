@@ -1,4 +1,4 @@
-package com.mapprr.gitsearch.home;
+package com.mapprr.gitsearch.main;
 
 import android.app.Activity;
 import android.content.Context;
