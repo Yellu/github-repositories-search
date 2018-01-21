@@ -1,9 +1,11 @@
 package com.mapprr.gitsearch.database;
 
+import com.mapprr.gitsearch.Utilities;
+
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.io.IOException;
+import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -31,26 +33,50 @@ public class DBManager {
         try {
             String jsonStr = responseBody.string();
             realm.beginTransaction();
+            RepoResultsEntity repoResultsEntity = realm.where(RepoResultsEntity.class).findFirst();
 
-            RealmResults<RepositoryEntity> repositoryEntities = Realm.getDefaultInstance().where(RepositoryEntity.class).findAll();
-
-            if (!repositoryEntities.isEmpty()){
-                repositoryEntities.deleteAllFromRealm();
+            if (repoResultsEntity != null && repoResultsEntity.isValid()){
+                repoResultsEntity.deleteFromRealm();
             }
-
-            realm.createOrUpdateObjectFromJson(RepoResultsEntity.class, jsonStr);
+            RepoResultsEntity repoResult = realm.createOrUpdateObjectFromJson(RepoResultsEntity.class, jsonStr);
+            for (RepositoryEntity repositoryEntity: repoResult.items){
+                Date date = Utilities.stringToDate(repositoryEntity.created_at);
+                repositoryEntity.createdAt = date;
+            }
             realm.commitTransaction();
+
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void createContributorsFromJsonResponse(ResponseBody responseBody){
+    public void createContributorsFromJsonResponse(ResponseBody responseBody, int repoId){
         try {
             String jsonString = responseBody.string();
             JSONArray jsonArray = new JSONArray(jsonString);
             realm.beginTransaction();
             realm.createOrUpdateAllFromJson(ContributorEntity.class, jsonArray);
+
+            for (ContributorEntity contributorEntity: realm.where(ContributorEntity.class).equalTo("parentRepoId", -1).findAll()){
+                contributorEntity.parentRepoId = repoId;
+            }
+            realm.commitTransaction();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createReposFromJsonResponse(ResponseBody responseBody){
+        try {
+            String jsonString = responseBody.string();
+            JSONArray jsonArray = new JSONArray(jsonString);
+            realm.beginTransaction();
+            realm.createOrUpdateAllFromJson(RepositoryEntity.class, jsonArray);
             realm.commitTransaction();
         } catch (IOException e) {
             e.printStackTrace();

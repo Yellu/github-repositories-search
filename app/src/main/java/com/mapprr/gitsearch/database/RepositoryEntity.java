@@ -1,5 +1,7 @@
 package com.mapprr.gitsearch.database;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -81,6 +83,7 @@ public class RepositoryEntity extends RealmObject {
     public int watchers;
     public String default_branch;
     public float score;
+    public Date createdAt;
 //    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 //
 //    public Map<String, Object> getAdditionalProperties() {

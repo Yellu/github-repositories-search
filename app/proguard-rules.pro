@@ -41,15 +41,13 @@
 -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
   **[] $VALUES;
   public *;
+}
 
-
-#===================================================
-# Eventbus
-#===================================================
-#-keep attributes *Annotation*
-#-keepclassmembers class ** {
-#    @org.greenrobot.eventbus.Subscribe <methods>;
-#}
+# ==================== greenrobot-eventbus ===================================
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
 
 # Only required if you use AsyncExecutor
@@ -57,3 +55,4 @@
     <init>(java.lang.Throwable);
 }
 
+-keep class android.support.v7.widget.SearchView { *; }

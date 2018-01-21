@@ -1,29 +1,38 @@
-package com.mapprr.gitsearch;
+package com.mapprr.gitsearch.main;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.mapprr.gitsearch.R;
+import com.mapprr.gitsearch.SettingsManager;
 import com.mapprr.gitsearch.database.ContributorEntity;
 import com.mapprr.gitsearch.database.DBManager;
+import com.mapprr.gitsearch.database.OwnerEntity;
 import com.mapprr.gitsearch.database.RepositoryEntity;
+import com.mapprr.gitsearch.event.ProjectLinkEvent;
 import com.mapprr.gitsearch.network.NetworkManager;
 
+import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import okhttp3.ResponseBody;
@@ -44,10 +53,18 @@ public class RepoDetailsFragment extends Fragment {
     TextView tvProjectLink;
     @BindView(R.id.tv_description)
     TextView tvDescription;
+    @BindView(R.id.dataLoadProgress)
+    ContentLoadingProgressBar dataLoadProgress;
+    @BindView(R.id.img_contributor_avatar)
+    ImageView contributorAvatar;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbar;
+    @BindView(R.id.tv_contributor) TextView tv_contributor;
 
+    private Realm realm;
     private RepositoryEntity repositoryEntity;
     private ContributorGridAdapter contributorGridAdapter;
-
+    private RealmResults<ContributorEntity> contributorEntities;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +77,14 @@ public class RepoDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.repo_details_fragment, container, false);
         ButterKnife.bind(this, view);
         repositoryEntity = SettingsManager.getInstance().repositoryEntity;
+        realm = Realm.getDefaultInstance();
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        dataLoadProgress.hide();
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         if (actionBar != null){
@@ -74,19 +92,27 @@ public class RepoDetailsFragment extends Fragment {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+
         String projectLink = repositoryEntity.html_url;
         String description = repositoryEntity.description;
+        OwnerEntity ownerEntity = repositoryEntity.owner;
+        String url = ownerEntity.avatar_url;
+        String name = repositoryEntity.name;
+        collapsingToolbar.setTitle(name);
+
+        Glide.with(getActivity())
+                .asBitmap()
+                .load(url)
+                .apply(RequestOptions.circleCropTransform()
+                .placeholder(R.drawable.user_placeholder)
+                .error(R.drawable.user_placeholder))
+                .into(contributorAvatar);
 
         if (projectLink == null){
 
         } else {
-            tvProjectLink.setText(projectLink);
-            tvProjectLink.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("hjg", "j");
-                }
-            });
+            String text = "<a href='http://www.google.com'>" + projectLink + "</a>";
+            tvProjectLink.setText(Html.fromHtml(text));
         }
 
         if (description == null){
@@ -94,25 +120,24 @@ public class RepoDetailsFragment extends Fragment {
         } else {
             tvDescription.setText(description);
         }
-//
-//        String linkedText = "<b>text3:</b>  Text with a " +
-//                String.format("<a href=\"%s\">link</a> ", projectLink) +
-//                "created in the Java source code using HTML.";
-//
-//        tvProjectLink.setText(Html.fromHtml(linkedText));
-//        tvProjectLink.setMovementMethod(LinkMovementMethod.getInstance());
+        contributorEntities = realm.where(ContributorEntity.class).equalTo("parentRepoId", repositoryEntity.id).findAll();
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        contributorGridAdapter = new ContributorGridAdapter(getActivity());
+        contributorGridAdapter = new ContributorGridAdapter(getActivity(), contributorEntities);
         recyclerView.setAdapter(contributorGridAdapter);
 
         getContributors(repositoryEntity.contributors_url);
     }
 
     private void updateAdapter(){
-        RealmResults<ContributorEntity> contributorEntities = Realm.getDefaultInstance().where(ContributorEntity.class).findAll();
+        RealmResults<ContributorEntity> contributorEntities = realm.where(ContributorEntity.class).equalTo("parentRepoId", repositoryEntity.id).findAll();
+        if (contributorEntities.isEmpty()){
+            tv_contributor.setVisibility(View.VISIBLE);
+        } else {
+            tv_contributor.setVisibility(View.GONE);
+        }
         contributorGridAdapter.updateAdapter(contributorEntities);
         contributorGridAdapter.notifyDataSetChanged();
     }
@@ -122,21 +147,29 @@ public class RepoDetailsFragment extends Fragment {
         super.onResume();
     }
 
+    @OnClick(R.id.llProjectLink)
+    public void openLink(){
+        String projectLink = repositoryEntity.html_url;
+        EventBus.getDefault().post(new ProjectLinkEvent(projectLink));
+    }
+
     private void getContributors(String url){
+        dataLoadProgress.show();
         Call<ResponseBody> request = NetworkManager.getInstance().contributorsRequest(getActivity(), url);
 
         request.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){
-                    DBManager.getInstance().createContributorsFromJsonResponse(response.body());
+                    DBManager.getInstance().createContributorsFromJsonResponse(response.body(), repositoryEntity.id);
                     updateAdapter();
                 }
+                dataLoadProgress.hide();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                dataLoadProgress.hide();
             }
         });
     }

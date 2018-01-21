@@ -1,6 +1,13 @@
 <resources>
-    <string name="app_name">GitSearch</string>
+    <string name="app_name">Github Repository Search</string>
     <string name="project_link">Project Link</string>
     <string name="description">Description</string>
     <string name="contributors">Contributors</string>
+    <string name="no_results">No Results Found</string>
+    <string name="repository_list">Repository List</string>
+    <string name="project_details">Project Details</string>
+    <string name="filter">Filter</string>
+    <string name="save">Save</string>
+    <string name="no_contributors">No Contributors</string>
+    <string name="home">GithubSearch</string>
 </resources>

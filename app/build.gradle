@@ -1,4 +1,14 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 apply plugin: 'kotlin-android'
 
@@ -24,6 +34,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 repositories {
@@ -31,6 +45,7 @@ repositories {
     mavenCentral()
     maven { url 'https://maven.google.com' }
     maven { url 'https://jitpack.io' }
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 dependencies {
@@ -57,4 +72,11 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.2'
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+    implementation 'info.hoang8f:android-segmented:1.0.6'
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true;
+    }
+
 }
