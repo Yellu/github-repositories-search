@@ -45,6 +45,8 @@ public class DBManager {
             }
             realm.commitTransaction();
 
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,7 +59,7 @@ public class DBManager {
             realm.beginTransaction();
             realm.createOrUpdateAllFromJson(ContributorEntity.class, jsonArray);
 
-            for (ContributorEntity contributorEntity: realm.where(ContributorEntity.class).findAll()){
+            for (ContributorEntity contributorEntity: realm.where(ContributorEntity.class).equalTo("parentRepoId", -1).findAll()){
                 contributorEntity.parentRepoId = repoId;
             }
             realm.commitTransaction();

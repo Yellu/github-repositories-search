@@ -59,13 +59,12 @@ public class RepoDetailsFragment extends Fragment {
     ImageView contributorAvatar;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
-    @BindView(R.id.appbar)
-    AppBarLayout appBarLayout;
+    @BindView(R.id.tv_contributor) TextView tv_contributor;
 
     private Realm realm;
     private RepositoryEntity repositoryEntity;
     private ContributorGridAdapter contributorGridAdapter;
-
+    private RealmResults<ContributorEntity> contributorEntities;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,11 +120,12 @@ public class RepoDetailsFragment extends Fragment {
         } else {
             tvDescription.setText(description);
         }
+        contributorEntities = realm.where(ContributorEntity.class).equalTo("parentRepoId", repositoryEntity.id).findAll();
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        contributorGridAdapter = new ContributorGridAdapter(getActivity());
+        contributorGridAdapter = new ContributorGridAdapter(getActivity(), contributorEntities);
         recyclerView.setAdapter(contributorGridAdapter);
 
         getContributors(repositoryEntity.contributors_url);
@@ -133,6 +133,11 @@ public class RepoDetailsFragment extends Fragment {
 
     private void updateAdapter(){
         RealmResults<ContributorEntity> contributorEntities = realm.where(ContributorEntity.class).equalTo("parentRepoId", repositoryEntity.id).findAll();
+        if (contributorEntities.isEmpty()){
+            tv_contributor.setVisibility(View.VISIBLE);
+        } else {
+            tv_contributor.setVisibility(View.GONE);
+        }
         contributorGridAdapter.updateAdapter(contributorEntities);
         contributorGridAdapter.notifyDataSetChanged();
     }

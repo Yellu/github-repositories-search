@@ -8,4 +8,5 @@
     <string name="project_details">Project Details</string>
     <string name="filter">Filter</string>
     <string name="save">Save</string>
+    <string name="no_contributors">No Contributors</string>
 </resources>

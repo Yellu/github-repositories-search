@@ -153,6 +153,14 @@
                             android:id="@+id/my_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:id="@+id/tv_contributor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/no_contributors"/>
+
                     </LinearLayout>
 
                     <android.support.v4.widget.ContentLoadingProgressBar

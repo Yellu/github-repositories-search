@@ -26,8 +26,9 @@ import io.realm.RealmResults;
 public class ContributorGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private RealmResults<ContributorEntity> contributorEntities;
-    public ContributorGridAdapter(Activity activity){
+    public ContributorGridAdapter(Activity activity, RealmResults<ContributorEntity> contributorEntities){
         this.context = activity;
+        updateAdapter(contributorEntities);
     }
 
     public void updateAdapter(RealmResults<ContributorEntity> contributorEntities){

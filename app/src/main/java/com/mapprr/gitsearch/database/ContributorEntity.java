@@ -1,5 +1,7 @@
 package com.mapprr.gitsearch.database;
 
+import android.support.annotation.Nullable;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -27,7 +29,7 @@ public class ContributorEntity extends RealmObject {
     public String type;
     public Boolean site_admin;
     public Integer contributions;
-    public int parentRepoId;
+    public int parentRepoId = -1;
 //    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 //
 //    @JsonAnyGetter
