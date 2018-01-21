@@ -13,6 +13,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * Created by appigizer on 17/1/18.
@@ -36,6 +37,12 @@ public class NetworkManager {
     private interface GitSearchApiClient{
         @GET("search/repositories")
         Call<ResponseBody> getRepos(@Query("q") String searchKey);
+
+        @GET
+        Call<ResponseBody> getContributors(@Url String url);
+
+        @GET
+        Call<ResponseBody> getOwnerRepos(@Url String url);
     }
 
     public static LoggingInterceptor provideOkHttpLogging(){
@@ -78,6 +85,15 @@ public class NetworkManager {
     public Call<ResponseBody> searchRequest(Context context, String query){
         return getService(context).getRepos(query);
     }
+
+    public Call<ResponseBody> contributorsRequest(Context context, String baseUrl){
+        return getService(context).getContributors(baseUrl);
+    }
+
+    public Call<ResponseBody> getOwnerReposRequest(Context context, String baseUrl){
+        return getService(context).getOwnerRepos(baseUrl);
+    }
+
 
 
 }

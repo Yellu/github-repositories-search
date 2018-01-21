@@ -43,7 +43,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        RepoViewHolder repoViewHolder = (RepoViewHolder) holder;
+        final RepoViewHolder repoViewHolder = (RepoViewHolder) holder;
         RepositoryEntity repositoryEntity = repositoryEntities.get(position);
 
         String name = repositoryEntity.name;
@@ -69,6 +69,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         repoViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SettingsManager.getInstance().repositoryEntity = repositoryEntities.get(repoViewHolder.getAdapterPosition());
                 EventBus.getDefault().post(new RepoDetailsEvent());
             }
         });

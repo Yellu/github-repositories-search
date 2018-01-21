@@ -21,6 +21,15 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_error_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:text="@string/no_results"/>
+
     <android.support.v4.widget.ContentLoadingProgressBar
         android:id="@+id/dataLoadProgress"
         android:layout_width="wrap_content"
