@@ -4,7 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+
+import com.mapprr.gitsearch.contributor.ContributorDetailsFragment;
+import com.mapprr.gitsearch.event.ContributorDetailsEvent;
+import com.mapprr.gitsearch.event.ProjectLinkEvent;
 import com.mapprr.gitsearch.event.RepoDetailsEvent;
+import com.mapprr.gitsearch.home.HomeFragment;
+import com.mapprr.gitsearch.repoDetails.RepoDetailsFragment;
+import com.mapprr.gitsearch.repoDetails.WebViewFragment;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -44,13 +53,36 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void launchContributorDetails(RepoDetailsEvent repoDetailsEvent){
+    public void launchContributorDetails(ContributorDetailsEvent contributorDetailsEvent){
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.repo, new ContributorDetailsFragment())
                 .addToBackStack(null)
                 .commit();
     }
 
+    @Subscribe
+    public void launchProjectDetails(ProjectLinkEvent projectLinkEvent){
+
+        Bundle argsBundle = new Bundle();
+        argsBundle.putString("projectLink", projectLinkEvent.getUrl());
+        WebViewFragment webViewFragment = new WebViewFragment();
+        webViewFragment.setArguments(argsBundle);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.repo, webViewFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
