@@ -1,8 +1,12 @@
 package com.mapprr.gitsearch.database;
 
+import com.mapprr.gitsearch.Utilities;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import java.io.IOException;
+import java.util.Date;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import okhttp3.ResponseBody;
@@ -31,11 +35,16 @@ public class DBManager {
             realm.beginTransaction();
             RepoResultsEntity repoResultsEntity = realm.where(RepoResultsEntity.class).findFirst();
 
-            if (repoResultsEntity != null){
+            if (repoResultsEntity != null && repoResultsEntity.isValid()){
                 repoResultsEntity.deleteFromRealm();
             }
-            realm.createOrUpdateObjectFromJson(RepoResultsEntity.class, jsonStr);
+            RepoResultsEntity repoResult = realm.createOrUpdateObjectFromJson(RepoResultsEntity.class, jsonStr);
+            for (RepositoryEntity repositoryEntity: repoResult.items){
+                Date date = Utilities.stringToDate(repositoryEntity.created_at);
+                repositoryEntity.createdAt = date;
+            }
             realm.commitTransaction();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

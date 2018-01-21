@@ -2,27 +2,23 @@ package com.mapprr.gitsearch.home;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +31,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.mapprr.gitsearch.R;
@@ -45,7 +40,6 @@ import com.mapprr.gitsearch.database.RepoResultsEntity;
 import com.mapprr.gitsearch.database.RepositoryEntity;
 import com.mapprr.gitsearch.network.NetworkManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,7 +55,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static org.greenrobot.eventbus.EventBus.TAG;
 
 /**
@@ -95,7 +88,6 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
     LinearLayout llToDate;
     @BindView(R.id.tvStartDate)
     TextView tvStartDate;
-
     @BindView(R.id.tvEndDate)
     TextView tvEndDate;
 
@@ -161,19 +153,19 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
             public void onPanelSlide(View panel, float slideOffset) {
                 Log.i(TAG, "onPanelSlide, offset " + slideOffset);
 //                //if expanded hide the panel
-//                if (expanded) {
-//                    mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-//                    expanded = false;
-//                }
+                if (expanded) {
+                    expanded = false;
+                    mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                }
             }
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                Log.i(TAG, "onPanelStateChanged " + newState);
-//                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
-//                    //set the expanded flag true to mark the expanded panel state.
-//                    expanded = true;
-//                }
+                Log.i(TAG, previousState + " onPanelStateChanged " + newState);
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                    //set the expanded flag true to mark the expanded panel state.
+                    expanded = true;
+                }
             }
         });
 
@@ -248,24 +240,15 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_filter:
-                bottomSheet();
-                if (mLayout != null) {
-                    if (mLayout.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED) {
-                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                    } else {
-                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    }
+                if (mLayout.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED) {
+                    mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                } else {
+                    mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 }
                 break;
 
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void bottomSheet(){
-//        DialogFragment newFragment = MyAlertDialogFragment.newInstance(
-//                R.string.app_name);
-//        newFragment.show(getChildFragmentManager(), "dialog");
     }
 
     @Override
@@ -393,12 +376,17 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
 
     @OnClick(R.id.btn_save_filter)
     void saveFilter(){
+        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        dataLoadProgress.show();
+
+        new Handler().postDelayed(() -> dataLoadProgress.hide(), 1000);
+
         if (sortBy == null){
             //close filter
             return;
         }
-        RealmQuery<RepositoryEntity> realmQuery = repositoryEntities.where();
-//                .between("created_at", startDate, endDate);
+        RealmQuery<RepositoryEntity> realmQuery = repositoryEntities.where()
+                .between("createdAt", startDate, endDate);
         if (orderBy != null && orderBy.equalsIgnoreCase("desc")){
             realmQuery = realmQuery.sort(sortBy, Sort.DESCENDING);
         } else {
@@ -411,22 +399,49 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        String sortBy = null, orderBy = null;
         switch (buttonView.getId()){
             case R.id.star:
-                sortBy = "stargazers_count";
+                if (isChecked){
+                    sortBy = "stargazers_count";
+                } else {
+                    sortBy = null;
+                }
                 break;
             case R.id.fork:
-                sortBy = "forks_count";
+                if (isChecked){
+                    sortBy = "forks_count";
+                } else {
+                    sortBy = null;
+                }
                 break;
             case R.id.updated:
-                sortBy = "updated_at";
+                if (isChecked){
+                    sortBy = "updated_at";
+                } else {
+                    sortBy = null;
+                }
                 break;
             case R.id.desc:
-                orderBy = "desc";
+                if (isChecked){
+                    orderBy = "desc";
+                } else {
+                    orderBy = null;
+                }
                 break;
             case R.id.asc:
-                orderBy = "asc";
+                if (isChecked){
+                    orderBy = "asc";
+                } else {
+                    orderBy = null;
+                }
                 break;
+        }
+        if (sortBy != null){
+            this.sortBy = sortBy;
+        }
+        if (orderBy != null){
+            this.orderBy = orderBy;
         }
     }
 }

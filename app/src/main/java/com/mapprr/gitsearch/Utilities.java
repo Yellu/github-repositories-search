@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -25,65 +26,9 @@ import java.util.TimeZone;
  */
 public class Utilities {
 
-
-  ///Deletes it along with all the contents
-  private void deleteRecursive(File fileOrDirectory) {
-    if (fileOrDirectory.isDirectory())
-      for (File child : fileOrDirectory.listFiles())
-        deleteRecursive(child);
-    fileOrDirectory.delete();
-  }
   public static String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-  public static String saveImage(Bitmap finalBitmap, String filename, Context context) {
-    String root = Environment.getExternalStorageDirectory().toString();
-    File myDir = new File(root + "/SkoolSlate/Chats");
-    myDir.mkdirs();
-    long timeMillis = System.currentTimeMillis();
-    String fname = "wallpaper-"+ timeMillis +".jpg";
-    File file = new File (myDir, fname);
-    if (file.exists ()) file.delete ();
-    try {
-      FileOutputStream out = new FileOutputStream(file);
-      finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-      out.flush();
-      out.close();
-      if (BuildConfig.DEBUG) {
-//        MISToast.show(context, "File saved successfully", false);
-      }
-      String filePath = file.getPath();
-      addImageToGallery(file.getPath(),context);
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return file.getAbsolutePath();
-  }
-
-  public static void addImageToGallery(final String filePath, final Context context) {
-    ContentValues values = new ContentValues();
-    values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
-    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-    values.put(MediaStore.MediaColumns.DATA, filePath);
-    context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-  }
   //  ======================== Date Utilities =================================
-  public static String utcToItc(String date){
-    SimpleDateFormat utcDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    String formattedDate = null;
-    utcDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    try {
-      Date myDate = utcDateFormat.parse(date);
-//      MISLog.printDebug(""+ myDate);
-      utcDateFormat.setTimeZone(TimeZone.getDefault());
-      formattedDate = utcDateFormat.format(myDate);
-      return formattedDate;
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
-    return formattedDate;
-  }
-
   public static Date getStartingTimeOfDayForDate(Date date) {
     Calendar calendar = Calendar.getInstance();
     //calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -117,17 +62,20 @@ public class Utilities {
     Date date = calendar.getTime();
     return date;
   }
+
   public enum DateField {
     Year /* = Calendar.YEAR */,
     Month /* = Calendar.MONTH */,
     Day /* = Calendar.DAY_OF_MONTH */
   }
+
   public static Date getDate(final int year, final int month, final int day) {
     Calendar currentCalender = Calendar.getInstance();
     currentCalender.setTime(new Date());
     currentCalender.set(year, month, day);
     return currentCalender.getTime();
   }
+
   ///After/Before current date
   public static Date getDateAfter(int value, DateField dateField) {
     Calendar currentCalender = Calendar.getInstance();
@@ -144,6 +92,7 @@ public class Utilities {
     currentCalender.add(field, value);
     return currentCalender.getTime();
   }
+
   public static Date stringToDate(String dateStr) {
     if (dateStr == null) {
       if (BuildConfig.DEBUG) {
@@ -153,7 +102,7 @@ public class Utilities {
     }
     Date date = null;
     try {
-      DateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+      DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
       df.setTimeZone(TimeZone.getDefault());
       date = df.parse(dateStr);
     } catch (ParseException e) {
@@ -173,7 +122,7 @@ public class Utilities {
     }
     Date date = null;
     try {
-      DateFormat df = new SimpleDateFormat("yyyyMMdd");
+      DateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
      // df.setTimeZone(TimeZone.getTimeZone("UTC"));
       date = df.parse(dateStr);
     } catch (ParseException e) {
@@ -185,7 +134,7 @@ public class Utilities {
 
 
   public static String dateToStringForDisplay(Date date) {
-    return dateToUTCString(date, "dd-MMM-yyyy h:mm a");
+    return dateToUTCString(date, "dd-MM-yyyy");
   }
 
   public static Boolean isDateToday(Date date) {
@@ -194,15 +143,11 @@ public class Utilities {
     return startTimeOfDay == startingTimeOfToday;
   }
 
-  public static String dateToStringForTimeTable(Date date) {
-    return dateToString(date, "h:mm a");
-  }
-
   public static String dateToString(Date date, String format) {
     if (date == null) {
       return "";
     }
-    SimpleDateFormat sdf = new SimpleDateFormat(format);
+    SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
     sdf.setTimeZone(TimeZone.getDefault());
     return sdf.format(date);
   }
@@ -210,7 +155,7 @@ public class Utilities {
     if (date == null) {
       return "";
     }
-    SimpleDateFormat sdf = new SimpleDateFormat(format);
+    SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
     sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
     return sdf.format(date);
   }
