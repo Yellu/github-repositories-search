@@ -75,8 +75,8 @@ public class NetworkManager {
         return createService(GitSearchApiClient.class, context);
     }
 
-    public Call<ResponseBody> searchRequest(Context context){
-        return getService(context).getRepos("calligraphy");
+    public Call<ResponseBody> searchRequest(Context context, String query){
+        return getService(context).getRepos(query);
     }
 
 

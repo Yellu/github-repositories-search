@@ -13,9 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.mapprr.gitsearch.database.OwnerEntity;
 import com.mapprr.gitsearch.database.RepositoryEntity;
 import com.mapprr.gitsearch.event.RepoDetailsEvent;
-
 import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.RealmResults;
@@ -30,6 +28,10 @@ public class RepoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RepoListAdapter(RealmResults<RepositoryEntity> repositoryEntities, Activity activity){
         this.repositoryEntities = repositoryEntities;
         context = activity;
+    }
+
+    public void updateAdapter(RealmResults<RepositoryEntity> repositoryEntities){
+        this.repositoryEntities = repositoryEntities;
     }
 
     @Override
@@ -55,8 +57,8 @@ public class RepoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 .asBitmap()
                 .load(url)
                 .apply(RequestOptions.circleCropTransform()
-                .placeholder(R.drawable.ic_watcher_count)
-                .error(R.drawable.ic_watcher_count))
+                .placeholder(R.drawable.user_placeholder)
+                .error(R.drawable.user_placeholder))
                         .into(repoViewHolder.imageView);
 
         repoViewHolder.tvName.setText(name);
