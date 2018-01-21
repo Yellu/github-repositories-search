@@ -15,6 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:contentInsetStartWithNavigation="0dp"
+            app:titleTextColor="@android:color/white"
+            app:title="@string/home"
             android:background="@color/colorPrimary"/>
 
         <android.support.v7.widget.RecyclerView

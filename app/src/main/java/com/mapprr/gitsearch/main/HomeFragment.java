@@ -129,7 +129,6 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
 
         if (actionBar != null){
             actionBar.setDisplayShowTitleEnabled(true);
-            mToolbar.setTitleTextColor(ContextCompat.getColor(getActivity(), android.R.color.white));
         }
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 
@@ -196,8 +195,8 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_search, menu);
         final SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        this.searchMenuItem = menu.findItem(R.id.menu_search);
-        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        this.searchMenuItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
 
         if (searchView != null) {
             editSearch = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
@@ -254,9 +253,11 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        editSearch.setTextColor(Color.WHITE);
-        menu.findItem(R.id.menu_search).setVisible(true);
+        menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.menu_filter).setVisible(true);
+        if (editSearch != null){
+            editSearch.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
+        }
     }
 
     public static void hideSoftKeyboard(Activity activity) {
