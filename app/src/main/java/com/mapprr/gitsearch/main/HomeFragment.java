@@ -225,6 +225,10 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
             repositoryEntities = repoResultsEntity.items.where().findAll().sort("watchers_count", Sort.DESCENDING);
         }
 
+       updateAdapter(repositoryEntities);
+    }
+
+    private void updateAdapter(RealmResults<RepositoryEntity> repositoryEntities){
         if (repositoryEntities == null || repositoryEntities.isEmpty()){
             tv_error_message.setVisibility(View.VISIBLE);
         } else {
@@ -386,8 +390,7 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
             realmQuery = realmQuery.sort(sortBy, Sort.ASCENDING);
         }
         repositoryEntities = realmQuery.findAll();
-        repoListAdapter.updateAdapter(repositoryEntities);
-        repoListAdapter.notifyDataSetChanged();
+        updateAdapter(repositoryEntities);
     }
 
     @Override

@@ -32,9 +32,7 @@ public class ContributorEntity extends RealmObject {
     public Boolean site_admin;
     public Integer contributions;
     public int parentRepoId = -1;
-    @LinkingObjects("RepositoryEntity")
-    private final RealmResults<RepositoryEntity> repositoryEntities = null;
-//
+
 //    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 //
 //    @JsonAnyGetter
