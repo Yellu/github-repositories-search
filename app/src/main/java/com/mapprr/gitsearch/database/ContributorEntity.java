@@ -3,6 +3,8 @@ package com.mapprr.gitsearch.database;
 import android.support.annotation.Nullable;
 
 import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.annotations.LinkingObjects;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -30,6 +32,9 @@ public class ContributorEntity extends RealmObject {
     public Boolean site_admin;
     public Integer contributions;
     public int parentRepoId = -1;
+    @LinkingObjects("RepositoryEntity")
+    private final RealmResults<RepositoryEntity> repositoryEntities = null;
+//
 //    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 //
 //    @JsonAnyGetter

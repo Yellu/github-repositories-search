@@ -375,8 +375,11 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
             //close filter
             return;
         }
-        RealmQuery<RepositoryEntity> realmQuery = repositoryEntities.where()
-                .between("createdAt", startDate, endDate);
+        RealmQuery<RepositoryEntity> realmQuery = repositoryEntities.where();
+        if (startDate != null && endDate != null){
+            realmQuery = realmQuery.between("createdAt", startDate, endDate);
+        }
+
         if (orderBy != null && orderBy.equalsIgnoreCase("desc")){
             realmQuery = realmQuery.sort(sortBy, Sort.DESCENDING);
         } else {
