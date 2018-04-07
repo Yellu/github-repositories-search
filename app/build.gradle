@@ -21,7 +21,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.mapprr.gitreposearch"
+        applicationId "com.github.search"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
