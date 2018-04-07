@@ -27,6 +27,7 @@ import com.github.search.database.OwnerEntity;
 import com.github.search.database.RepositoryEntity;
 import com.github.search.event.ProjectLinkEvent;
 import com.github.search.network.NetworkManager;
+import com.google.android.gms.ads.AdView;
 import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +59,8 @@ public class RepoDetailsFragment extends Fragment {
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.tv_contributor) TextView tv_contributor;
+    @BindView(R.id.adView) AdView mAdView;
+
 
     private Realm realm;
     private RepositoryEntity repositoryEntity;
@@ -90,6 +93,10 @@ public class RepoDetailsFragment extends Fragment {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice("")
+//                .build();
+//        mAdView.loadAd(adRequest);
 
         String projectLink = repositoryEntity.html_url;
         String description = repositoryEntity.description;
@@ -157,7 +164,7 @@ public class RepoDetailsFragment extends Fragment {
 
         request.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()){
                     DBManager.getInstance().createContributorsFromJsonResponse(response.body(), repositoryEntity.id);
                     updateAdapter();
