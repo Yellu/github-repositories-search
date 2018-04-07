@@ -2,6 +2,7 @@ package com.github.search;
 
 import android.app.Application;
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
@@ -21,6 +22,8 @@ public class GitHubSearchApplication extends Application {
         Fabric.with(this, new Crashlytics());
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Stetho.initializeWithDefaults(this);
+
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()

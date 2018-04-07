@@ -116,7 +116,7 @@ public class ContributorDetailsFragment extends Fragment {
 
     private void contributorDetailsFetch(String url){
         dataLoadProgress.show();
-        Call<ResponseBody> request = NetworkManager.getInstance().getOwnerReposRequest(getActivity(), url);
+        Call<ResponseBody> request = NetworkManager.getInstance().getOwnerReposRequest(url);
 
         request.enqueue(new Callback<ResponseBody>() {
             @Override

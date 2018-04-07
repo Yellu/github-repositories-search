@@ -1,12 +1,9 @@
 package com.github.search.network;
 
-import android.content.Context;
-
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.ihsanbal.logging.LoggingInterceptor;
 import com.github.search.BuildConfig;
-
 import java.util.Map;
-
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.internal.platform.Platform;
@@ -14,7 +11,6 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
@@ -48,7 +44,7 @@ public class NetworkManager {
         Call<ResponseBody> getOwnerRepos(@Url String url);
     }
 
-    public static LoggingInterceptor provideOkHttpLogging(){
+    private static LoggingInterceptor provideOkHttpLogging(){
         return new LoggingInterceptor.Builder()
                 .loggable(BuildConfig.DEBUG)
                 .log(Platform.INFO)
@@ -57,8 +53,10 @@ public class NetworkManager {
                 .build();
     }
 
-    private <T> T createService(Class<T> service, Context context){
+    private <T> T createService(Class<T> service){
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.addNetworkInterceptor(new StethoInterceptor());
+
 
 //        builder.retryOnConnectionFailure(true);
 //        builder.readTimeout(30, TimeUnit.SECONDS)
@@ -81,22 +79,20 @@ public class NetworkManager {
         return retrofit.create(service);
     }
 
-    private GitSearchApiClient getService(Context context){
-        return createService(GitSearchApiClient.class, context);
+    private GitSearchApiClient getService(){
+        return createService(GitSearchApiClient.class);
     }
 
-    public Call<ResponseBody> searchRequest(Context context, Map<String, Object> queryMap){
-        return getService(context).getRepos(queryMap);
+    public Call<ResponseBody> searchRequest(Map<String, Object> queryMap){
+        return getService().getRepos(queryMap);
     }
 
-    public Call<ResponseBody> contributorsRequest(Context context, String baseUrl){
-        return getService(context).getContributors(baseUrl);
+    public Call<ResponseBody> contributorsRequest(String baseUrl){
+        return getService().getContributors(baseUrl);
     }
 
-    public Call<ResponseBody> getOwnerReposRequest(Context context, String baseUrl){
-        return getService(context).getOwnerRepos(baseUrl);
+    public Call<ResponseBody> getOwnerReposRequest(String baseUrl){
+        return getService().getOwnerRepos(baseUrl);
     }
-
-
 
 }

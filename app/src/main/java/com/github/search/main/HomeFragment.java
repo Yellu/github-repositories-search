@@ -278,7 +278,7 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
         queryMap.put("order", "desc");
         queryMap.put("per_page", 10);
 
-        Call<ResponseBody> request = NetworkManager.getInstance().searchRequest(getActivity(), queryMap);
+        Call<ResponseBody> request = NetworkManager.getInstance().searchRequest(queryMap);
         request.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

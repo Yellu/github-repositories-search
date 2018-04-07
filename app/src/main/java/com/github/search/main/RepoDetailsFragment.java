@@ -160,7 +160,7 @@ public class RepoDetailsFragment extends Fragment {
 
     private void getContributors(String url){
         dataLoadProgress.show();
-        Call<ResponseBody> request = NetworkManager.getInstance().contributorsRequest(getActivity(), url);
+        Call<ResponseBody> request = NetworkManager.getInstance().contributorsRequest(url);
 
         request.enqueue(new Callback<ResponseBody>() {
             @Override

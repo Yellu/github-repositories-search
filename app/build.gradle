@@ -64,6 +64,10 @@ dependencies {
     implementation 'info.hoang8f:android-segmented:1.0.6'
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.1'
+
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
