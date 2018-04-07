@@ -1,19 +1,16 @@
 package com.github.search.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-
 import com.github.search.R;
-import com.github.search.main.ContributorDetailsFragment;
 import com.github.search.event.ContributorDetailsEvent;
 import com.github.search.event.ProjectLinkEvent;
 import com.github.search.event.RepoDetailsEvent;
-import com.github.search.main.HomeFragment;
-import com.github.search.main.RepoDetailsFragment;
-import com.github.search.main.WebViewFragment;
+import com.github.search.fastadapter.RealmActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -46,10 +43,12 @@ public class LauncherActivity extends AppCompatActivity {
 
     @Subscribe
     public void launchRepoDetails(RepoDetailsEvent repoDetailsEvent){
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.repo, new RepoDetailsFragment())
-                .addToBackStack(null)
-                .commit();
+        startActivity(new Intent(this, RealmActivity.class));
+
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.repo, new RepoDetailsFragment())
+//                .addToBackStack(null)
+//                .commit();
     }
 
     @Subscribe
