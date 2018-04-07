@@ -1,15 +1,6 @@
 package com.mapprr.gitsearch;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.compat.BuildConfig;
 import android.text.TextUtils;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +13,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Created by panxshaz on 1/Aug/16.
+ * Created by yellappa on 1/Aug/16.
  */
 public class Utilities {
 

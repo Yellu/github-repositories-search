@@ -3,7 +3,6 @@ package com.mapprr.gitsearch.main;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
@@ -28,7 +27,6 @@ import com.mapprr.gitsearch.database.OwnerEntity;
 import com.mapprr.gitsearch.database.RepositoryEntity;
 import com.mapprr.gitsearch.event.ProjectLinkEvent;
 import com.mapprr.gitsearch.network.NetworkManager;
-
 import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.ButterKnife;
