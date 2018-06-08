@@ -18,6 +18,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".fastadapter.EndlessScrollListActivity"/>
+        <activity android:name=".fastadapter.RealmActivity"/>
+
         <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
 
     </application>
