@@ -31,8 +31,9 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.repo, new HomeFragment())
+                .add(R.id.repo, SearchListFragment.newInstance())
                 .commit();
     }
 

@@ -60,7 +60,7 @@ import static org.greenrobot.eventbus.EventBus.TAG;
  * Created by yellappa on 17/1/18.
  */
 
-public class HomeFragment extends Fragment implements CompoundButton.OnCheckedChangeListener{
+public class SearchListFragment extends Fragment implements CompoundButton.OnCheckedChangeListener{
     @BindView(R.id.repoList)
     RecyclerView recyclerView;
     @BindView(R.id.toolbar)
@@ -104,6 +104,10 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
     private Calendar dateRangeCalendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener dateSetListener = null;
 
+    public static SearchListFragment newInstance(){
+        return new SearchListFragment();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,15 +140,17 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
             repositoryEntities = repoResultsEntity.items.where().findAll().sort("watchers_count", Sort.DESCENDING);
         }
 
-        if (repositoryEntities == null || repositoryEntities.isEmpty()){
-            tv_error_message.setVisibility(View.VISIBLE);
-        }
-
         repoListAdapter = new RepoListAdapter(repositoryEntities, getActivity(), true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(repoListAdapter);
+
+        //for first time search
+        if (repositoryEntities == null || repositoryEntities.isEmpty()){
+            tv_error_message.setVisibility(View.VISIBLE);
+            fetchRepos("git");
+        }
 
         mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
@@ -225,7 +231,7 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
             repositoryEntities = repoResultsEntity.items.where().findAll().sort("watchers_count", Sort.DESCENDING);
         }
 
-       updateAdapter(repositoryEntities);
+        updateAdapter(repositoryEntities);
     }
 
     private void updateAdapter(RealmResults<RepositoryEntity> repositoryEntities){
@@ -281,7 +287,7 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
         Call<ResponseBody> request = NetworkManager.getInstance().searchRequest(queryMap);
         request.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()){
                     DBManager.getInstance().createRepos(response.body());
                     reloadAdapter();
@@ -290,7 +296,7 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 dataLoadProgress.hide();
             }
         });

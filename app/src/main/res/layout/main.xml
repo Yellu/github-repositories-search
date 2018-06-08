@@ -11,4 +11,5 @@
     <include layout="@layout/repo_list_fragment"/>
 
     <include layout="@layout/filter_fragment"/>
+
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
