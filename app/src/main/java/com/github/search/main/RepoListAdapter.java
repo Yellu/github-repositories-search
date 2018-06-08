@@ -75,12 +75,9 @@ public class RepoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         repoViewHolder.tvCommitCount.setText(String.valueOf(commitCount));
         repoViewHolder.tvStarCount.setText(String.valueOf(starCount));
 
-        repoViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SettingsManager.getInstance().repositoryEntity = repositoryEntities.get(repoViewHolder.getAdapterPosition());
-                EventBus.getDefault().post(new RepoDetailsEvent());
-            }
+        repoViewHolder.itemView.setOnClickListener(v -> {
+            SettingsManager.getInstance().repositoryEntity = repositoryEntities.get(repoViewHolder.getAdapterPosition());
+            EventBus.getDefault().post(new RepoDetailsEvent());
         });
     }
 

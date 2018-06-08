@@ -67,6 +67,28 @@ dependencies {
 
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+    implementation 'com.mikepenz:fastadapter:3.2.5'
+    implementation 'com.mikepenz:fastadapter-commons:3.2.5'
+    implementation 'com.mikepenz:fastadapter-extensions-expandable:3.2.5'
+    implementation 'com.mikepenz:fastadapter-extensions:3.2.5'
+    implementation 'com.mikepenz:materialize:1.1.2@aar'
+
+    // used to provide out of the box icon font support. simplifies development,
+    // and provides scalable icons. the core is very very light
+    // https://github.com/mikepenz/Android-Iconics
+    implementation 'com.mikepenz:iconics-core:3.0.3@aar'
+    implementation "com.mikepenz:iconics-views:3.0.3@aar"
+
+    //used to display the icons in the drawer
+    //https://github.com/mikepenz/Android-Iconics
+    implementation 'com.mikepenz:material-design-iconic-typeface:2.2.0.1@aar'
+    implementation 'com.mikepenz:community-material-typeface:1.7.22.1@aar'
+    implementation 'com.mikepenz:google-material-typeface:3.0.1.1.original@aar'
+    implementation 'com.mikepenz:fontawesome-typeface:4.7.0.0@aar'
+
+    //used to provide different itemAnimators for the RecyclerView
+    //https://github.com/mikepenz/ItemAnimators
+    implementation 'com.mikepenz:itemanimators:1.0.2@aar'
 
 }
 

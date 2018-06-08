@@ -1,21 +1,18 @@
-package com.github.search.database;
+package com.github.search.fastadapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.github.search.R;
-import com.github.search.fastadapter.RealmSampleUserItem;
+import com.github.search.database.LicenseEntity;
+import com.github.search.database.OwnerEntity;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.items.AbstractItem;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +23,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
-/**
- * Created by yellappa on 18/1/18.
- */
-
-public class RepositoryEntity extends RealmObject implements IItem<RepositoryEntity, RepositoryEntity.ViewHolder> {
+public class RealmSampleUserItem extends RealmObject implements IItem<RealmSampleUserItem, RealmSampleUserItem.ViewHolder> {
     @PrimaryKey
     public int id;
     public String name;
@@ -117,11 +110,11 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      * @param name
      * @return this
      */
-    public RepositoryEntity withName(String name) {
+    public RealmSampleUserItem withName(String name) {
         this.name = name;
         return this;
     }
-//
+
 //    // the identifier for this item
 //    @PrimaryKey
 //    protected long mIdentifier = -1;
@@ -132,7 +125,7 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      * @param identifier
      * @return this
      */
-    public RepositoryEntity withIdentifier(long identifier) {
+    public RealmSampleUserItem withIdentifier(long identifier) {
         this.id = (int) identifier;
         return this;
     }
@@ -155,7 +148,7 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      * @param object
      * @return this
      */
-    public RepositoryEntity withTag(Object object) {
+    public RealmSampleUserItem withTag(Object object) {
         this.mTag = object;
         return this;
     }
@@ -178,7 +171,7 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      * @param enabled true if this item is enabled
      * @return this
      */
-    public RepositoryEntity withEnabled(boolean enabled) {
+    public RealmSampleUserItem withEnabled(boolean enabled) {
         this.mEnabled = enabled;
         return this;
     }
@@ -202,7 +195,7 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      * @return this
      */
     @Override
-    public RepositoryEntity withSetSelected(boolean selected) {
+    public RealmSampleUserItem withSetSelected(boolean selected) {
         this.mSelected = selected;
         return this;
     }
@@ -226,7 +219,7 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      * @return this
      */
     @Override
-    public RepositoryEntity withSelectable(boolean selectable) {
+    public RealmSampleUserItem withSelectable(boolean selectable) {
         this.mSelectable = selectable;
         return this;
     }
@@ -267,7 +260,7 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      */
     @Override
     public View generateView(Context ctx) {
-        RepositoryEntity.ViewHolder viewHolder = getViewHolder(LayoutInflater.from(ctx).inflate(getLayoutRes(), null, false));
+        ViewHolder viewHolder = getViewHolder(LayoutInflater.from(ctx).inflate(getLayoutRes(), null, false));
 
         //as we already know the type of our ViewHolder cast it to our type
         bindView(viewHolder, Collections.EMPTY_LIST);
@@ -285,7 +278,7 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      */
     @Override
     public View generateView(Context ctx, ViewGroup parent) {
-        RepositoryEntity.ViewHolder viewHolder = getViewHolder(LayoutInflater.from(ctx).inflate(getLayoutRes(), parent, false));
+        ViewHolder viewHolder = getViewHolder(LayoutInflater.from(ctx).inflate(getLayoutRes(), parent, false));
 
         //as we already know the type of our ViewHolder cast it to our type
         bindView(viewHolder, Collections.EMPTY_LIST);
@@ -300,7 +293,7 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      * @return
      */
     @Override
-    public RepositoryEntity.ViewHolder getViewHolder(ViewGroup parent) {
+    public ViewHolder getViewHolder(ViewGroup parent) {
         return getViewHolder(LayoutInflater.from(parent.getContext()).inflate(getLayoutRes(), parent, false));
     }
 
@@ -310,8 +303,8 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      * @param v
      * @return the ViewHolder for this Item
      */
-    private RepositoryEntity.ViewHolder getViewHolder(View v) {
-        return new RepositoryEntity.ViewHolder(v);
+    private ViewHolder getViewHolder(View v) {
+        return new ViewHolder(v);
     }
 
     /**
@@ -320,40 +313,27 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      * @param holder
      */
     @Override
-    public void bindView(RepositoryEntity.ViewHolder holder, List<Object> payloads) {
+    public void bindView(ViewHolder holder, List<Object> payloads) {
         //set the selected state of this item. force this otherwise it may is missed when implementing an item
         holder.itemView.setSelected(isSelected());
 
-        if (owner != null){
-            Glide.with(holder.itemView)
-                    .asBitmap()
-                    .load(owner.avatar_url)
-                    .apply(RequestOptions.circleCropTransform()
-                            .placeholder(R.drawable.user_placeholder)
-                            .error(R.drawable.user_placeholder))
-                    .into(holder.imageView);
-        }
-
+        //set the name
         holder.tvName.setText(name);
-        holder.tvFullName.setText(full_name);
-        holder.tvWatcherCount.setText(String.valueOf(watchers_count));
-        holder.tvCommitCount.setText(String.valueOf(forks_count));
-        holder.tvStarCount.setText(String.valueOf(stargazers_count));
     }
 
     @Override
-    public void unbindView(RepositoryEntity.ViewHolder holder) {
+    public void unbindView(ViewHolder holder) {
         holder.tvName.setText(null);
     }
 
     @Override
-    public void attachToWindow(RepositoryEntity.ViewHolder holder) {}
+    public void attachToWindow(ViewHolder holder) {}
 
     @Override
-    public void detachFromWindow(RepositoryEntity.ViewHolder holder) {}
+    public void detachFromWindow(ViewHolder holder) {}
 
     @Override
-    public boolean failedToRecycle(RepositoryEntity.ViewHolder holder) {
+    public boolean failedToRecycle(ViewHolder holder) {
         return false;
     }
 
@@ -365,7 +345,7 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
      */
     @Override
     public boolean equals(int id) {
-        return id == this.id;
+        return id == getIdentifier();
     }
 
     /**
@@ -379,7 +359,7 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AbstractItem<?, ?> that = (AbstractItem<?, ?>) o;
-        return that.getIdentifier() == that.getIdentifier();
+        return getIdentifier() == that.getIdentifier();
     }
 
     /**
@@ -391,7 +371,6 @@ public class RepositoryEntity extends RealmObject implements IItem<RepositoryEnt
     public int hashCode() {
         return Long.valueOf(getIdentifier()).hashCode();
     }
-
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tvName) TextView tvName;
