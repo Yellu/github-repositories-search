@@ -7,13 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.github.search.R;
-import com.github.search.main.ContributorDetailsFragment;
 import com.github.search.event.ContributorDetailsEvent;
 import com.github.search.event.ProjectLinkEvent;
 import com.github.search.event.RepoDetailsEvent;
-import com.github.search.main.HomeFragment;
-import com.github.search.main.RepoDetailsFragment;
-import com.github.search.main.WebViewFragment;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -34,8 +31,9 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.repo, new HomeFragment())
+                .add(R.id.repo, SearchListFragment.newInstance())
                 .commit();
     }
 
