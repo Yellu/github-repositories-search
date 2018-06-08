@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-
 import com.github.search.R;
 import com.github.search.event.ContributorDetailsEvent;
 import com.github.search.event.ProjectLinkEvent;
 import com.github.search.event.RepoDetailsEvent;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
