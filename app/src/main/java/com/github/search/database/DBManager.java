@@ -64,9 +64,7 @@ public class DBManager {
             }
             realm.commitTransaction();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
     }
@@ -78,9 +76,7 @@ public class DBManager {
             realm.beginTransaction();
             realm.createOrUpdateAllFromJson(RepositoryEntity.class, jsonArray);
             realm.commitTransaction();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
     }

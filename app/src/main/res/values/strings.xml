@@ -11,5 +11,6 @@
     <string name="no_contributors">No Contributors</string>
     <string name="home">GithubSearch</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="sample_realm_list">Realm Sample</string>
 
 </resources>
