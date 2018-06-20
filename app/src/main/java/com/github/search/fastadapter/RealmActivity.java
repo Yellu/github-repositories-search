@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.itemanimators.AlphaInAnimator;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.mikepenz.materialize.MaterializeBuilder;
+
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
@@ -50,7 +52,7 @@ public class RealmActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        findViewById(android.R.id.content).setSystemUiVisibility(findViewById(android.R.id.content).getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        findViewById(android.R.id.content).setSystemUiVisibility(findViewById(android.R.id.content).getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_fast_adapter);
 
@@ -171,7 +173,7 @@ public class RealmActivity extends AppCompatActivity {
             case R.id.item_add:
                 mRealm.where(RepositoryEntity.class).findAllAsync().addChangeListener(new RealmChangeListener<RealmResults<RepositoryEntity>>() {
                     @Override
-                    public void onChange(RealmResults<RepositoryEntity> userItems) {
+                    public void onChange(@NonNull RealmResults<RepositoryEntity> userItems) {
                         //Remove the change listener
                         userItems.removeChangeListener(this);
                         //Store the primary key to get access from a other thread
@@ -191,8 +193,8 @@ public class RealmActivity extends AppCompatActivity {
     //Prevent the realm instance from leaking
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         closeRealm();
+        super.onDestroy();
     }
 
     private void closeRealm() {

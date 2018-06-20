@@ -28,7 +28,8 @@ public class RepoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    private RealmResults<RepositoryEntity> repositoryEntities;
    private Context context;
    private boolean isDisplayAvatar;
-    public RepoListAdapter(RealmResults<RepositoryEntity> repositoryEntities, Activity activity, boolean isDisplayAvatar){
+
+   public RepoListAdapter(RealmResults<RepositoryEntity> repositoryEntities, Activity activity, boolean isDisplayAvatar){
         this.repositoryEntities = repositoryEntities;
         context = activity;
         this.isDisplayAvatar = isDisplayAvatar;
@@ -55,6 +56,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int watcherCount = repositoryEntity.watchers_count;
         int commitCount = repositoryEntity.forks_count;
         int starCount = repositoryEntity.stargazers_count;
+
         if (isDisplayAvatar){
             OwnerEntity ownerEntity = repositoryEntity.owner;
             String url = ownerEntity.avatar_url;
@@ -62,8 +64,8 @@ public class RepoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     .asBitmap()
                     .load(url)
                     .apply(RequestOptions.circleCropTransform()
-                            .placeholder(R.drawable.user_placeholder)
-                            .error(R.drawable.user_placeholder))
+                            .placeholder(R.drawable.ic_github_logo)
+                            .error(R.drawable.ic_github_logo))
                     .into(repoViewHolder.imageView);
         } else {
             repoViewHolder.imageView.setImageResource(R.drawable.repo_github);

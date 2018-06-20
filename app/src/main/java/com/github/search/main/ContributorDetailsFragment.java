@@ -96,8 +96,8 @@ public class ContributorDetailsFragment extends Fragment {
                 .asBitmap()
                 .load(url)
                 .apply(RequestOptions.circleCropTransform()
-                        .placeholder(R.drawable.user_placeholder)
-                        .error(R.drawable.user_placeholder))
+                        .placeholder(R.drawable.ic_github_logo)
+                        .error(R.drawable.ic_github_logo))
                 .into(contributorAvatar);
 
         contributorDetailsFetch(contributorEntity.repos_url);
@@ -120,7 +120,7 @@ public class ContributorDetailsFragment extends Fragment {
 
         request.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()){
                     DBManager.getInstance().createReposFromJsonResponse(response.body());
                     reloadAdapter();

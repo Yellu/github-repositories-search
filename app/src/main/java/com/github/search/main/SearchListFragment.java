@@ -274,6 +274,7 @@ public class SearchListFragment extends Fragment implements CompoundButton.OnChe
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
+    private Call<ResponseBody> request = null;
     private void fetchRepos(String query){
         tv_error_message.setVisibility(View.GONE);
         dataLoadProgress.show();
@@ -284,7 +285,11 @@ public class SearchListFragment extends Fragment implements CompoundButton.OnChe
         queryMap.put("order", "desc");
         queryMap.put("per_page", 10);
 
-        Call<ResponseBody> request = NetworkManager.getInstance().searchRequest(queryMap);
+        if (request != null){
+            request.cancel();
+        }
+
+        request = NetworkManager.getInstance().searchRequest(queryMap);
         request.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
